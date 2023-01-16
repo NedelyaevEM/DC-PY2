@@ -26,28 +26,30 @@ class Book:
 
 
 class Library:
-    def __init__(self, books: list[Book] = []):
+    def __init__(self, books: list[Book] = None):
         self.books = books
+        if books is None:
+            self.books = []
 
 
     def get_next_book_id(self):
         if self.books == []:
             return 1
         else:
-            return self.books[-1].get('id', default=None) + 1
+            return self.books[-1].id_ + 1
 
 
     def get_index_by_book_id(self, id_: int):
         flag = False
+        index: int = 0
         for book in self.books:
-            if book.get('id') == id_:
-                index = book.index()
+            if book.id_ == id_:
+                index = self.books.index(book)
                 flag = True
         if flag:
             return index
         else:
             raise ValueError('Книги с запрашиваемым id не существует')
-
 
 
 if __name__ == '__main__':
