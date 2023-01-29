@@ -28,7 +28,7 @@ class PaperBook(Book):
         return f"Бумажная книга {self.name}. Автор {self.author}. Количество страниц: {self.pages}."
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, pages={self.pages!r})"
+        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, pages={self.pages})"
 
     @property
     def pages(self) -> int:
@@ -52,7 +52,7 @@ class AudioBook(Book):
         return f"Аудиокнига {self.name}. Автор {self.author}. Длительность: {self.duration}."
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, duration={self.duration!r})"
+        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, duration={self.duration})"
 
     @property
     def duration(self) -> float:
