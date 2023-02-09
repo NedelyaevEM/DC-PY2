@@ -1,67 +1,134 @@
-class Book:
-    """ Базовый класс книги. """
-    def __init__(self, name: str, author: str):
-        self._name = name
-        self._author = author
+if __name__ == "__main__":
+    class VideoGame:
+        def __init__(self, name: str, weight: float):
+            """
+            Создание и подготовка к работе объекта "Видеоигра"
 
-    def __str__(self):
-        return f"Книга {self.name}. Автор {self.author}."
+            :param name: Название игры
+            :param weight: Объём занимаемой памяти в Гб
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r})"
+            Примеры:
+            >>> grand_theft_auto = VideoGame('Grand Theft Auto 5', 108.53) # инициализация экземпляра класса
+             """
+            self._name = name # защищенный атрибут, потому что пользователь не может изменить имя игры
+            self._weight = weight # защищенный атрибут, потому что пользователь не может изменить вес игры
 
-    @property
-    def author(self) -> str:
-        return self._author
+        def __str__(self) -> str:
+            return f'Видеоигра "{self._name}". Требуемый объём памяти: {self._weight} Гб.'
 
-    @property
-    def name(self) -> str:
-        return self._name
+        def __repr__(self) -> str:
+            return f'{self.__class__.__name__}(name = {self._name!r}, weight = {self._weight})'
+
+        def install_game(self, free_space: float) -> float:
+            """
+            С помощью этой функции мы устанавливаем игру на устройство.
+
+            :param free_space: Количество свободной памяти на устройстве в Гб
+
+            Примеры:
+            >>> limbo = VideoGame('LIMBO', 150 / 1024)
+            >>> limbo.install_game(640.3)
+            """
+            if free_space < self._weight:
+                raise ValueError('Недостаточно места на диске!')
+            return free_space - self._weight
+
+        def uninstall_game(self, free_space: float) -> float:
+            """
+            С помощью этой функции мы устанавливаем игру на устройство.
+
+            :param free_space: Количество свободной памяти на устройстве в Гб
+
+            Примеры:
+            >>> limbo = VideoGame('LIMBO', 150 / 1024)
+            >>> limbo.uninstall_game(640.3)
+            """
+            return free_space + self._weight
 
 
-class PaperBook(Book):
-    def __init__(self, name: str, author: str, pages: int = None):
-        super().__init__(name, author)
-        self._pages = pages
+    class SinglePlayerGame(VideoGame):
+        def __init__(self, name: str, weight: float, gameplay_hours: int):
+            """
+            Создание и подготовка к работе объекта "Одиночная видеоигра"
 
-    def __str__(self):
-        return f"Бумажная книга {self.name}. Автор {self.author}. Количество страниц: {self.pages}."
+            :param name: Название игры
+            :param weight: Объём занимаемой памяти в Гб
+            :param gameplay_hours: Число часов геймплея
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, pages={self.pages})"
+            Примеры:
+            >>> the_witcher_3 = SinglePlayerGame('The Wither 3: Wild Hunt', 57.76, 100) # инициализация экземпляра класса
+             """
+            super().__init__(name, weight)
+            self._gameplay_hours = gameplay_hours # защищенный атрибут, потому что пользователь не может изменить количество геймлейных часов игры
 
-    @property
-    def pages(self) -> int:
-        return self._pages
+        def __str__(self) -> str:
+            return f'Одиночная видеоигра "{self._name}". Требуемый объём памяти: {self._weight} Гб. Количество часов геймлея: {self._gameplay_hours}.'
 
-    @pages.setter
-    def pages(self, pages) -> None:
-        if not isinstance(pages, int):
-            raise TypeError
-        if pages < 0:
-            raise ValueError
-        self._pages = pages
+        def __repr__(self) -> str:
+            return f'{self.__class__.__name__}(name = {self._name!r}, weight = {self._weight}, gameplay_hours = {self._gameplay_hours})'
+
+        @staticmethod
+        def save_progress(save_cell: int) -> str:
+            """
+            С помощью этой функции мы сохраняем игру в выбранной ячейке сохранения.
+
+            :param save_cell: Номер ячейки сохранения в списке.
+
+            Примеры:
+            >>> the_witcher_3 = SinglePlayerGame('The Wither 3: Wild Hunt', 57.76, 100)
+            >>> the_witcher_3.save_progress(2)
+            """
+            return f'Игра сохранена в ячейке сохранения {save_cell}'
+
+        @staticmethod
+        def load_progress(save_cell: int) -> str:
+            """
+            С помощью этой функции мы загружаем игру из вывбранной ячейки сохранения.
+
+            :param save_cell: Номер ячейки сохранения в списке.
+
+            Примеры:
+            >>> the_witcher_3 = SinglePlayerGame('The Wither 3: Wild Hunt', 57.76, 100)
+            >>> the_witcher_3.load_progress(2)
+            """
+            return f'Загрузка сохранения в ячейке сохранения {save_cell}.'
 
 
-class AudioBook(Book):
-    def __init__(self, name: str, author: str, duration: float = None):
-        super().__init__(name, author)
-        self._duration = duration
+    class OnlineGame(VideoGame):
+        def __init__(self, name: str, weight: float, average_online: int):
+            """
+            Создание и подготовка к работе объекта "Онлайн-видеоигра"
 
-    def __str__(self):
-        return f"Аудиокнига {self.name}. Автор {self.author}. Длительность: {self.duration}."
+            :param name: Название игры
+            :param weight: Объём занимаемой памяти в Гб
+            :param average_online: Среднее число онлайн-игроков.
 
-    def __repr__(self):
-        return f"{self.__class__.__name__}(name={self.name!r}, author={self.author!r}, duration={self.duration})"
+            Примеры:
+            >>> dota_2 = OnlineGame('Dota 2', 15, 573592) # инициализация экземпляра класса
+             """
+            super().__init__(name, weight)
+            self._average_online = average_online # защищенный атрибут, потому что пользователь не может изменить количество онлайн-игроков
 
-    @property
-    def duration(self) -> float:
-        return self._duration
+        def __str__(self) -> str:
+            return f'Онлайн-игра "{self._name}". Требуемый объём памяти: {self._weight} Гб. Среднее количество онлайн-игроков: {self._average_online}.'
 
-    @duration.setter
-    def duration(self, duration) -> None:
-        if not isinstance(duration, float):
-            raise TypeError
-        if duration < 0:
-            raise ValueError
-        self._duration = duration
+        def __repr__(self) -> str:
+            return f'{self.__class__.__name__}(name = {self._name!r}, weight = {self._weight}, average_online = {self._average_online})'
+
+        @staticmethod
+        def find_match() -> None:
+            """
+            С помощью этой функции мы запускаем поиск матча внутри игры.
+
+            Примеры:
+            >>> dota_2 = OnlineGame('Dota 2', 15, 573592)
+            >>> dota_2.find_match()
+           """
+            ...
+
+
+
+
+
+
+
